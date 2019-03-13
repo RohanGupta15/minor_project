@@ -1,0 +1,28 @@
+_sourceCategory=Apache/Access ("Googlebot" OR "AskJeeves" OR "Digger" OR "Lycos" OR "msnbot" OR "Inktomi Slurp" OR "Yahoo" OR "Nutch" OR "bingbot" OR "BingPreview" OR "Mediapartners-Google" OR "proximic" OR "AhrefsBot" OR "AdsBot-Google" OR "Ezooms" OR "AddThis.com" OR "facebookexternalhit" OR "MetaURI" OR "Feedfetcher-Google" OR "PaperLiBot" OR "TweetmemeBot" OR "Sogou web spider" OR "GoogleProducer" OR "RockmeltEmbedder" OR "ShareThisFetcher" OR "YandexBot" OR "rogerbot-crawler" OR "ShowyouBot" OR "Baiduspider" OR "Sosospider" OR "Exabot")
+parse regex "\"[A-Z]+\s+\S+\s+HTTP/[\d\.]+\"\s+\S+\s+\S+\s+\S+\s+\"(?<agent>[^\"]+?)\"" 
+parse regex field=agent "(?<bot_name>facebook)externalhit?\W+" nodrop 
+parse regex field=agent "Feedfetcher-(?<bot_name>Google?)\S+" nodrop 
+parse regex field=agent "(?<bot_name>PaperLiBot?)/.+" nodrop  
+parse regex field=agent "(?<bot_name>TweetmemeBot?)/.+" nodrop 
+parse regex field=agent "(?<bot_name>msn?)bot\W" nodrop  
+parse regex field=agent "(?<bot_name>Nutch?)-.+" nodrop  
+parse regex field=agent "(?<bot_name>Google?)bot\W" nodrop 
+parse regex field=agent "Feedfetcher-(?<bot_name>Google?)\W" nodrop  
+parse regex field=agent "(?<bot_name>Yahoo?)!\s+Slurp[;/].+" nodrop 
+parse regex field=agent "(?<bot_name>bing?)bot\W" nodrop 
+parse regex field=agent "(?<bot_name>Bing?)Preview\W" nodrop  
+parse regex field=agent "(?<bot_name>Sogou?)\s+web\s" nodrop  
+parse regex field=agent "(?<bot_name>Yandex?)Bot\W" nodrop
+parse regex field=agent "(?<bot_name>rogerbot?)\W" nodrop  
+parse regex field=agent "(?<bot_name>AddThis\.com?)\s+robot\s+" nodrop  
+parse regex field=agent "(?<bot_name>ShareThis?)Fetcher/.+" nodrop  
+parse regex field=agent "(?<bot_name>Ahrefs?)Bot/.+" nodrop 
+parse regex field=agent "(?<bot_name>MetaURI?)\s+API/.+" nodrop  
+parse regex field=agent "(?<bot_name>Showyou?)Bot\s+" nodrop  
+parse regex field=agent "(?<bot_name>Google?)Producer;" nodrop 
+parse regex field=agent "(?<bot_name>Ezooms?)\W" nodrop 
+parse regex field=agent "(?<bot_name>Rockmelt?)Embedder\s+" nodrop  
+parse regex field=agent "(?<bot_name>Sosospider?)\W" nodrop  
+parse regex field=agent "(?<bot_name>Baidu?)spider" nodrop 
+parse regex field=agent "(?<bot_name>Exabot?)\W" | where bot_name != "" | if (bot_name="bing","Bing",bot_name) as bot_name | count as hits by bot_name | sort by hits | limit 20
+
